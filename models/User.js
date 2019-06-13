@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function save(next) {
   if (this.password.length === 60 && this.password[0] === '$') { // already encrypted
     return next();
   }
@@ -38,7 +38,7 @@ UserSchema.pre('save', function (next) {
 });
 
 
-UserSchema.statics.authenticate = function (email, password, cb) {
+UserSchema.statics.authenticate = function auth(email, password, cb) {
   this.findOne({ email }, (err, user) => {
     if (err) {
       return cb(500);
@@ -58,7 +58,7 @@ UserSchema.statics.authenticate = function (email, password, cb) {
 };
 
 
-UserSchema.statics.findByIdOrEmail = function (emailOrId, cb) {
+UserSchema.statics.findByIdOrEmail = function find(emailOrId, cb) {
   if (emailOrId.split('@').length === 2) {
     return this.findOne({ email: emailOrId }, cb);
   }
