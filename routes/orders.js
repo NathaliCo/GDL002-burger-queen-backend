@@ -42,13 +42,23 @@ app.put('/order/:id', function(req, res) {
 
     let id = req.params.id;
     let body = req.body;
-    order.findByIdAndUpdate(id, (err, usuarioDB) => {
 
+    Order.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, orderDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
     })
 
-    res.json({
-        id
-    });
+
 });
 
 
