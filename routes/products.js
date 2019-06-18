@@ -11,7 +11,20 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/product', function(req, res) {
-    res.json('Get product');
+    Product.find({})
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                products
+            });
+        })
 });
 
 
