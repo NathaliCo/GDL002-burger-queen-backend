@@ -43,11 +43,26 @@ app.post('/product', function(req, res) {
 app.put('/product/:id', function(req, res) {
 
     let id = req.params.id;
+    let body = req.body;
 
-    res.json({
-        id
-    });
+    Product.findByIdAndUpdate(id, body, { new: true }, (err, productDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+
+        res.json({
+            ok: true,
+            product: productDB
+        });
+    })
+
+
 });
+
 
 
 app.delete('/product', function(req, res) {
