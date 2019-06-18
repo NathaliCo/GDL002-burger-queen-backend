@@ -6,14 +6,12 @@ const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
 
-
+//Import secrets from config 
 const { port, mongoUrl, secret } = config;
 const app = express();
 
-
 // Conectar aplicación a MongoDB
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex: true });
-
 
 app.set('config', config);
 app.set('pkg', pkg);
@@ -34,3 +32,8 @@ routes(app, (err) => {
 
     app.listen(port, () => console.log(`App listening on port ${port}`));
 });
+
+//new code
+
+app.use(require('./routes/Products'));
+app.use(require('./routes/Orders'));
