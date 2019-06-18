@@ -9,7 +9,20 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/order', function(req, res) {
-    res.json('Get order');
+    Order.find({})
+        .exec((err, orders) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                orders
+            });
+        })
 });
 
 
