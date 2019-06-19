@@ -23,6 +23,10 @@ const OrderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    state: {
+        type: Boolean,
+        required: true
+    }
 });
 
 OrderSchema.plugin(mongoosePaginate);
