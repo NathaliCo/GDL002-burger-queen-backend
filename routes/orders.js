@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/order', function(req, res) {
-    Order.find({})
+    Order.find({ state: true })
         .exec((err, orders) => {
             if (err) {
                 return res.status(400).json({
@@ -31,9 +31,7 @@ app.post('/order', function(req, res) {
     let body = req.body;
 
     let order = new Order({
-        status: 'pending',
         items: body.items,
-        stete: true
     })
 
     order.save((err, orderDB) => {
