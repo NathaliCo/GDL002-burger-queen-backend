@@ -12,6 +12,11 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, 'The price is required']
     },
+    state: {
+        type: Boolean,
+        required: true,
+
+    }
 });
 
 
