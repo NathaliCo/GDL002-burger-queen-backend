@@ -6,6 +6,7 @@ const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
 
+
 //Import secrets from config 
 const { port, mongoUrl, secret } = config;
 const app = express();
