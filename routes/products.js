@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/product', function(req, res) {
-    Product.find({})
+    Product.find({ state: true })
         .exec((err, products) => {
             if (err) {
                 return res.status(400).json({
@@ -35,7 +35,6 @@ app.post('/product', function(req, res) {
     let product = new Product({
         name: body.name,
         price: body.price,
-        status: true
     })
 
     product.save((err, productDB) => {
