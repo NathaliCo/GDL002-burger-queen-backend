@@ -10,7 +10,7 @@ let statusTrue = {
 const OrderSchema = new mongoose.Schema({
     status: {
         type: statusTrue,
-        required: [true, 'The status is required']
+        default: 'pending',
     },
 
     items: {
@@ -25,7 +25,7 @@ const OrderSchema = new mongoose.Schema({
     },
     state: {
         type: Boolean,
-        required: true
+        default: true
     }
 });
 
