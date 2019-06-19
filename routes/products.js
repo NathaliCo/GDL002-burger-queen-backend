@@ -34,7 +34,8 @@ app.post('/product', function(req, res) {
 
     let product = new Product({
         name: body.name,
-        price: body.price
+        price: body.price,
+        status: true
     })
 
     product.save((err, productDB) => {
@@ -78,8 +79,26 @@ app.put('/product/:id', function(req, res) {
 
 
 
-app.delete('/product', function(req, res) {
-    res.json('Delete product');
+app.delete('/product/:id', function(req, res) {
+
+    let id = req.params.id;
+    // Product.findByIdAndRemove(id, (err, deleteProduct) => {
+    let changeState = {
+        state: false
+    };
+    Product.findByIdAndUpdate(id, changeState, { new: true }, (err, deleteProduct) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        res.json({
+            ok: true,
+            product: deleteProduct
+        })
+    })
 });
 
 module.exports = app;
