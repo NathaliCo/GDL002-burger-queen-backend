@@ -33,6 +33,7 @@ app.post('/order', function(req, res) {
     let order = new Order({
         status: 'pending',
         items: body.items,
+        stete: true
     })
 
     order.save((err, orderDB) => {
@@ -75,8 +76,26 @@ app.put('/order/:id', function(req, res) {
 });
 
 
-app.delete('/order', function(req, res) {
-    res.json('Delete order');
+app.delete('/order/:id', function(req, res) {
+
+    let id = req.params.id;
+    // Product.findByIdAndRemove(id, (err, deleteProduct) => {
+    let changeState = {
+        state: false
+    };
+    Order.findByIdAndUpdate(id, changeState, { new: true }, (err, deleteOrder) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        res.json({
+            ok: true,
+            order: deleteOrder
+        })
+    })
 });
 
 module.exports = app;
