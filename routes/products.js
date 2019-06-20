@@ -100,4 +100,37 @@ app.delete('/product/:id', function(req, res) {
     })
 });
 
+
+// getProducts = (item) => {
+//     Product.find({ name: item })
+//         .exec((err, products) => {
+//             if (err) {
+//                 return ({
+//                     ok: false,
+//                     err
+//                 });
+//             }
+
+//             return products
+//         })
+// }
+
+// function getProducts() {
+//     let items = [burger, juice]
+
+//     console.log(Product)
+//     items.forEach(element => {
+//         console.log(element)
+//         Product.find({ name: element }, function(err, data) {
+//             if (err) {
+//                 //console.log(err);
+//             };
+//             console.log("should be the key VVV");
+//             // console.log(data.key);
+//         });
+//         items.push(data);
+//     });
+// }
+
 module.exports = app;
+// module.exports = getProducts;

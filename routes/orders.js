@@ -1,6 +1,8 @@
 const express = require('express');
 const Order = require('../models/Order');
-
+const getProducts = require('./products');
+//const Products = require('../models/Product');
+//var Product = mongoose.model('Product', userSchema);
 const app = express();
 
 const bodyParser = require('body-parser');
@@ -29,10 +31,21 @@ app.get('/order', function(req, res) {
 app.post('/order', function(req, res) {
 
     let body = req.body;
-
+    items = body.items;
     let order = new Order({
         items: body.items,
+        // createdBy: req.user._id
     })
+
+
+    // let order = items.forEach(item => {
+    //     let singleItem = getProducts(item);
+    //     let order = new Order({
+    //         items: singleItem,
+    //         // createdBy: req.user._id
+    //     })
+    //     return order;
+    // });
 
     order.save((err, orderDB) => {
         if (err) {

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
-
-// const Product = require('./Product');
+//const Product = require('./Product');
 
 let statusTrue = {
     values: ['pending', 'preparing', 'delivering', 'delivered'],
@@ -13,10 +12,12 @@ const OrderSchema = new mongoose.Schema({
         default: 'pending',
     },
 
-    items: {
-        //con un array
-        required: [true, 'The item is required'],
-        type: Array,
+    items: [{
+        type: String
+    }],
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
 
     },
     createAt: {
@@ -26,7 +27,7 @@ const OrderSchema = new mongoose.Schema({
     state: {
         type: Boolean,
         default: true
-    }
+    },
 });
 
 OrderSchema.plugin(mongoosePaginate);
