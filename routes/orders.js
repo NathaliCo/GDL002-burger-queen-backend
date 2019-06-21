@@ -1,16 +1,22 @@
 const express = require('express');
 const Order = require('../models/Order');
 const getProducts = require('./products');
-//const Products = require('../models/Product');
+const Product = require('../models/Product');
 //var Product = mongoose.model('Product', userSchema);
 const app = express();
 
 const bodyParser = require('body-parser');
+const {
+    requireAuth,
+    requireAdmin,
+    isAdmin,
+} = require('../middleware/auth');
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/order', function(req, res) {
+app.get('/orders', requireAuth, (req, res) => {
     Order.find({ state: true })
         .exec((err, orders) => {
             if (err) {
@@ -27,25 +33,19 @@ app.get('/order', function(req, res) {
         })
 });
 
+app.get('/orders/:id', requireAuth, (req, resp) => {
+    Product.find({ _id: req.params.id })
+        .then(data => resp.json(data))
+});
 
-app.post('/order', function(req, res) {
+app.post('/orders', requireAdmin, (req, res) => {
 
     let body = req.body;
-    items = body.items;
+
     let order = new Order({
         items: body.items,
-        // createdBy: req.user._id
+        createdBy: req.user._id
     })
-
-
-    // let order = items.forEach(item => {
-    //     let singleItem = getProducts(item);
-    //     let order = new Order({
-    //         items: singleItem,
-    //         // createdBy: req.user._id
-    //     })
-    //     return order;
-    // });
 
     order.save((err, orderDB) => {
         if (err) {
@@ -63,7 +63,7 @@ app.post('/order', function(req, res) {
 });
 
 
-app.put('/order/:id', function(req, res) {
+app.put('/orders/:id', requireAdmin, (req, res) => {
 
     let id = req.params.id;
     let body = req.body;
@@ -87,7 +87,7 @@ app.put('/order/:id', function(req, res) {
 });
 
 
-app.delete('/order/:id', function(req, res) {
+app.delete('/orders/:id', requireAdmin, (req, res) => {
 
     let id = req.params.id;
     // Product.findByIdAndRemove(id, (err, deleteProduct) => {

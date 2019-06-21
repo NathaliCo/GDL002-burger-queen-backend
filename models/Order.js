@@ -13,12 +13,13 @@ const OrderSchema = new mongoose.Schema({
     },
 
     items: [{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
     }],
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-
+        type: String
+            // type: mongoose.Schema.Types.ObjectId,
+            // ref: 'User',
     },
     createAt: {
         type: Date,

@@ -1,16 +1,20 @@
 const express = require('express');
-const Product = require('../models/product');
-
+const Product = require('../models/Product');
 const app = express();
 
-
 const bodyParser = require('body-parser');
+const {
+    requireAuth,
+    requireAdmin,
+    isAdmin,
+} = require('../middleware/auth');
 
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/product', function(req, res) {
+app.get('/products', requireAuth, (req, res) => {
+
     Product.find({ state: true })
         .exec((err, products) => {
             if (err) {
@@ -27,8 +31,11 @@ app.get('/product', function(req, res) {
         })
 });
 
-
-app.post('/product', function(req, res) {
+app.get('/products/:id', requireAuth, (req, resp) => {
+    Product.find({ _id: req.params.id })
+        .then(data => resp.json(data))
+});
+app.post('/products', requireAdmin, (req, res) => {
 
     let body = req.body;
 
@@ -53,7 +60,7 @@ app.post('/product', function(req, res) {
 });
 
 
-app.put('/product/:id', function(req, res) {
+app.put('/product/:id', requireAdmin, (req, res) => {
 
     let id = req.params.id;
     let body = req.body;
@@ -78,7 +85,7 @@ app.put('/product/:id', function(req, res) {
 
 
 
-app.delete('/product/:id', function(req, res) {
+app.delete('/product/:id', requireAdmin, (req, res) => {
 
     let id = req.params.id;
     // Product.findByIdAndRemove(id, (err, deleteProduct) => {
@@ -115,22 +122,28 @@ app.delete('/product/:id', function(req, res) {
 //         })
 // }
 
-// function getProducts() {
-//     let items = [burger, juice]
+function getProducts(items) {
 
-//     console.log(Product)
-//     items.forEach(element => {
-//         console.log(element)
-//         Product.find({ name: element }, function(err, data) {
-//             if (err) {
-//                 //console.log(err);
-//             };
-//             console.log("should be the key VVV");
-//             // console.log(data.key);
-//         });
-//         items.push(data);
-//     });
-// }
+    Product.findById(items, 'name price', function(err, prod) {
+
+        console.log(prod)
+        if (err) {
+            //console.log(err);
+        };
+        //console.log(data);
+        // console.log(data.key);
+
+
+    });
+    // Product.find({ _id: items }, function(err, data) {
+    //     console.log(Product);
+    //     if (err) {
+    //         //console.log(err);
+    //     };
+    //     console.log(data);
+    //     // console.log(data.key);
+    // });
+}
 
 module.exports = app;
-// module.exports = getProducts;
+//module.exports = getProducts;

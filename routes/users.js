@@ -107,6 +107,7 @@ module.exports = (app, next) => {
             if (linkHeader) {
                 resp.header({ Link: linkHeader });
             }
+
             resp.json(results.docs.map(omitPrivateProps));
         });
     });
